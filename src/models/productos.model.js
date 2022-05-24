@@ -6,6 +6,7 @@ const productoRelationSchema=new Schema({
 })
 
 
+
 const productoSchema=new Schema({
     nombre:{type:String},
     contenido:{type:Number},

@@ -5,17 +5,17 @@ import {direccionesSchema} from "./direcciones.model"
 export const tipos = ["general", "admin"];
 
 const empleadoSchema=new Schema({
-    tipo:{type:String,required:[true,"tipo requerido"],},
-    nombre:{type:String,required:[true,"Nombre requerido"],},
-    apepat:{type:String},
-    apemat:{type:String},
-    edad:{type:Number},
-    telefono:{type:String},
+    tipo:{type:String,default:tipos[0],},
+    nombre:{type:String,required:true,},
+    apepat:{type:String,required:true,},
+    apemat:{type:String,required:true,},
+    edad:{type:Number,required:true,},
+    telefono:{type:String,required:true,},
     correo:{type:String,unique:true,},
-    curp:{type:String},
-    passwd:{type:String},
+    curp:{type:String,required:true,},
+    passwd:{type:String,required:true,},
     direcciones:{type:direccionesSchema},
-    id_sucursal:{type:Schema.Types.ObjectId},
+    id_sucursal:{type:Schema.Types.ObjectId,required:true},
 },
 {versionKey:false});
 

@@ -2,7 +2,7 @@ import mongoose, { Schema,ObjectId,model} from "mongoose";
 
 const infoCuponesSchema=new Schema({
     id_cupon:{type:Schema.Types.ObjectId},
-    cantidad:{type:String},
+    cantidad:{type:Number},
 })
 
 const cuponesRelationSchema=new Schema({
