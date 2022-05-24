@@ -12,9 +12,9 @@ const empleadoSchema=new Schema({
     edad:{type:Number,required:true,},
     telefono:{type:String,required:true,},
     correo:{type:String,unique:true,},
-    curp:{type:String,required:true,},
+    curp:{type:String,required:true,unique:true},
     passwd:{type:String,required:true,},
-    direcciones:{type:direccionesSchema},
+    direccion:{type:direccionesSchema},
     id_sucursal:{type:Schema.Types.ObjectId,required:true},
 },
 {versionKey:false});
@@ -27,4 +27,4 @@ empleadoSchema.statics.ecryptPasswd=async (passwd)=>{
 empleadoSchema.statics.comparePasswd=async(passwd,npasswd)=>{
     return await bcrypt.compare(passwd,npasswd);
 }
-export default model('Cliente',empleadoSchema);
+export default model('Empleado',empleadoSchema);
