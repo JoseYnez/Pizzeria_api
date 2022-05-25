@@ -2,10 +2,10 @@ import { Schema,model } from "mongoose";
 import {direccionesSchema} from "./direcciones.model"
 
 const sucursalSchema=new Schema({
-    nombre:{type:String},
-    telefono:{type:String},
-    horario_apertura:{type:Date},
-    horario_cierre:{type:Date},
+    nombre:{type:String,required:true},
+    telefono:{type:String,required:true},
+    horario_apertura:{type:Date,required:true},
+    horario_cierre:{type:Date,required:true},
     direccion:{type:direccionesSchema},
     
 },{versionKey:false})

@@ -21,6 +21,7 @@ const carcteristicasPizzaSchema=new Schema({
 
 const carcteristicasProductoSchema=new Schema({
     nombre:[{type:String}],
+    marca:[{type:String}],
     tipo:[{type:String}],
     contenido:{type:Number},
     medida:{type:String},

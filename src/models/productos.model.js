@@ -5,15 +5,19 @@ const productoRelationSchema=new Schema({
     precio:{type:Number},
 })
 
-
+const arrayObjectIdSchema=new Schema({
+    array:[{type:Schema.Types.ObjectId}],
+})
 
 const productoSchema=new Schema({
-    nombre:{type:String},
-    contenido:{type:Number},
-    medida:{type:String},
+    nombre:{type:String,required:true},
+    marca:{type:String,required:true},
+    contenido:{type:Number,required:true},
+    medida:{type:String,required:true},
     imgUrl:{type:String},
-    tipo:{type:String},
+    tipo:{type:String,required:true},
     
 },{versionKey:false})
 module.exports.productoRelationSchema=productoRelationSchema;
+module.exports.arrayObjectIdSchema=arrayObjectIdSchema;
 export default model('Producto',productoSchema);
