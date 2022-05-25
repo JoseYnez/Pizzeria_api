@@ -9,4 +9,4 @@ const  direccionesSchema=new Schema({
     cp:{type:String},
 })
 module.exports.direccionesSchema= direccionesSchema;
-export default model('Direccion',direccionesSchema);
+//export default model('Direcciones',direccionesSchema);
