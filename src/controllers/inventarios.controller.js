@@ -62,6 +62,11 @@ export const updateInventarioById=async (req,res)=>{
     res.status(201).json(inventario);
 }
 
+export const updateCantidadproductos=async (req,res)=>{
+    const inventario=await Inventario.findByIdAndUpdate(req.body._id,req.body,{new:true});
+    res.status(201).json(inventario);
+}
+
 export const dropInventarioById=async (req,res)=>{
     const {id}=req.params;
     if((await Inventario.findByIdAndDelete(id))!=null)

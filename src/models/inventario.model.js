@@ -4,5 +4,6 @@ const  inventarioSchema=new Schema({
     id_sucursal:{type:Schema.Types.ObjectId},
     id_producto:{type:Schema.Types.ObjectId},
     cantidad:{type:Number},
+    cantidad_porciones:{type:Number},
 },{versionKey:false})
 export default model('Inventario',inventarioSchema);
