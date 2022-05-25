@@ -5,7 +5,7 @@ import config from "../config"
 export const EmpleadoSingUp=async (req,res)=>{
     const {nombre,apepat,apemat,edad,telefono,correo,curp,passwd,direccion,id_sucursal}=req.body;
     const empleado=new Empleado({
-        nombre,apepat,apemat,edad,telefono,correo,curp,passwd:await Cliente.ecryptPasswd(passwd),direccion,id_sucursal
+        nombre,apepat,apemat,edad,telefono,correo,curp,passwd:await Empleado.ecryptPasswd(passwd),direccion,id_sucursal
     });
     try {
             const saveEmpleado=await empleado.save();
