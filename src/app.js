@@ -11,9 +11,16 @@ import clientesRoutes from "./routes/clientes.route";
 import inventariosRoutes from "./routes/inventarios.route";
 import ordenesRoutes from "./routes/ordenes.route";
 import pizzasRoutes from "./routes/pizzas.route";
+import swaggerUiExpress from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
+import swwagerSpects from "./swagger.settings";
 
 
 const app=express();
+
+//settings swaager
+
+
 app.use(morgan('dev'))
 app.use(express.json());
 app.get('/',(req,res)=>{
@@ -32,5 +39,9 @@ app.use('/api/clientes',clientesRoutes);
 app.use('/api/inventarios',inventariosRoutes);
 app.use('/api/ordenes',ordenesRoutes);
 app.use('/api/pizzas',pizzasRoutes);
+
+///Route swagger
+app.use('/api-doc',swaggerUiExpress.serve,swaggerUiExpress.setup(swaggerJsdoc(swwagerSpects)));
+
 
 export default app;
