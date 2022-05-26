@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import config from "../config";
 import Cliente from "../models/clientes.model";
+import Empleado from "../models/empleados.model";
 export const verifyToken=async(req,res,next)=>{
     try {
         const token=req.headers["x-access-token"];
@@ -20,13 +21,10 @@ export const verifyToken=async(req,res,next)=>{
 
 export const verifyTokenEmpleado=async(req,res,next)=>{
     try {
-        const token=req.headers["x-access-token"];
-        console.log(token);
+        const token=req.headers["token"];
         if(!token) return res.status(403).json({message:"No token provider"});
         const decode=jwt.verify(token,config.superscret);
-        console.log(decode);
-        const cliente=await Cliente.findOne({_id:decode._id,correo:decode.correo},{_id:1});
-        console.log(cliente);
+        const cliente=await Empleado.findOne({_id:decode._id,correo:decode.correo},{_id:1});
         if(!cliente) return res.status(403).json({message:"No token provider"});
         next();  
     } catch (error) {
@@ -34,3 +32,17 @@ export const verifyTokenEmpleado=async(req,res,next)=>{
     }
     
 }
+
+export const EmpleadoIsAdmin=async(req,res,next)=>{
+    try {
+        const token=req.headers["token"];
+        if(!token) return res.status(403).json({message:"No token provider"});
+        const decode=jwt.verify(token,config.superscret);
+        if(decode.tipo=="admin") next();  
+        else return res.status(403).json({message:"No authorization"});
+    } catch (error) {
+        return res.status(403).json({message:"No authorization"});
+    }
+    
+}
+

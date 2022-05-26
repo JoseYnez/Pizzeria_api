@@ -6,6 +6,12 @@ export const getSucursales=async (req,res)=>{
 
 }
 
+export const getSucursalById=async (req,res)=>{
+    const sucursal=await Sucursal.findById(req.params.id);
+    if(sucursal!=null)res.status(200).json(sucursal);
+    else res.status(404).json();
+}
+
 export const createSucursal=async (req,res)=>{
     try {
         const sucursal=new Sucursal(req.body);

@@ -19,10 +19,10 @@ export const EmpleadoSingUp=async (req,res)=>{
 export const EmpleadoSingIn=async (req,res)=>{
     
     const empleadoFound=await Empleado.findOne({correo:req.body.correo},{_id:1,correo:1,passwd:1,tipo:1});
-    
+    console.log(empleadoFound)
     if(!empleadoFound) return res.status(404).json({token:null});
     const matchPasswd=await Empleado.comparePasswd(req.body.passwd,empleadoFound.passwd);
     if(!matchPasswd) return res.status(401).json({token:null});
-    const token=jwt.sign({_id:saveEmpleado._id,correo:saveEmpleado.correo,tipo:saveEmpleado.tipo},config.superscret);
+    const token=jwt.sign({_id:empleadoFound._id,correo:empleadoFound.correo,tipo:empleadoFound.tipo},config.superscret);
     res.status(201).json({token:token});
 }

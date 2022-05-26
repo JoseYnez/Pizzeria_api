@@ -12,7 +12,7 @@ const empleadoSchema=new Schema({
     edad:{type:Number,required:true,},
     telefono:{type:String,required:true,},
     correo:{type:String,unique:true,},
-    curp:{type:String,required:true,unique:true},
+    curp:{type:String,unique:true},
     passwd:{type:String,required:true,},
     direccion:{type:direccionesSchema},
     id_sucursal:{type:Schema.Types.ObjectId,required:true},
