@@ -6,7 +6,7 @@ const clientesSchema=new Schema({
     nombre:{type:String,required:[true,"Nombre requerido"],},
     apepat:{type:String},
     apemat:{type:String},
-    edad:{type:Number},
+    cumpleaños:{type:Date},
     telefono:{type:String},
     correo:{type:String,unique:true,},
     passwd:{type:String},

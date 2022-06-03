@@ -23,7 +23,7 @@ export default router;
  * @swagger
  * tags:
  *  name: AuthEmpleado
- *  description: API para la autenticacion de los empleados
+ *  description: API para la gestion de los empleados
  */
 
 /**

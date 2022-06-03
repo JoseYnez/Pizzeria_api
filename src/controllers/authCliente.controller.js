@@ -3,16 +3,16 @@ import jwt from "jsonwebtoken";
 import config from "../config"
 
 export const clienteSingUp=async (req,res)=>{
-    const {nombre,apepat,apemat,edad,telefono,correo,passwd,direcciones,cupones}=req.body;
+    const {nombre,apepat,apemat,cumpleaños,telefono,correo,passwd,direcciones,cupones}=req.body;
     const cliente=new Cliente({
-        nombre,apepat,apemat,edad,telefono,correo,passwd:await Cliente.ecryptPasswd(passwd),direcciones,cupones
+        nombre,apepat,apemat,cumpleaños,telefono,correo,passwd:await Cliente.ecryptPasswd(passwd),direcciones,cupones
     });
     try {
             const saveCliente=await cliente.save();
             const token=jwt.sign({_id:saveCliente._id,correo:saveCliente.correo},config.secret);
             res.status(201).send({token:token});
         } catch (error) {
-            res.status(404).send(false);
+            res.status(404).send({token:null});
         }
 }
 
@@ -25,4 +25,10 @@ export const clienteSingIn=async (req,res)=>{
     if(!matchPasswd) return res.status(401).json({token:null});
     const token=jwt.sign({_id:clienteFound._id,correo:clienteFound.correo},config.secret);
     res.status(201).json({token:token});
+}
+
+export const findCorreo=async (req,res)=>{
+    const clienteFound=await Cliente.findOne({correo:req.body.correo},{correo:1});
+    if(!clienteFound) return res.status(200).json({existe:false});
+    else return res.status(200).json({existe:true});
 }
