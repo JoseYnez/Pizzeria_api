@@ -2,10 +2,16 @@ import { Schema,model } from "mongoose";
 import bcrypt from "bcryptjs/dist/bcrypt";
 import {direccionesSchema} from "./direcciones.model"
 
-export const tipos = ["general", "admin"];
+export const tipos = ["general","gerente","admin"];
+const historialSchema=new Schema({
+    activo:{type:Boolean},
+    razon:{type:String},
+    fecha:{type:Date},
+});
 
 const empleadoSchema=new Schema({
     tipo:{type:String,default:tipos[0],},
+    activo:{type:Boolean,default:true},
     nombre:{type:String,required:true,},
     apepat:{type:String,required:true,},
     apemat:{type:String,required:true,},
@@ -16,6 +22,8 @@ const empleadoSchema=new Schema({
     passwd:{type:String,required:true,},
     direccion:{type:direccionesSchema},
     id_sucursal:{type:Schema.Types.ObjectId,required:true},
+    historial:[historialSchema],
+
 },
 {versionKey:false});
 

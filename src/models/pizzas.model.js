@@ -16,6 +16,6 @@ const pizzaSchema=new Schema({
     calificacion:{type:Number},
     ingredientes:[ingredienteRelationSchema]
     
-},{versionKey:false})
+},{versionKey:false,timestamps: true})
 module.exports.pizzaRelationSchema=pizzaRelationSchema;
 export default model('Pizza',pizzaSchema);

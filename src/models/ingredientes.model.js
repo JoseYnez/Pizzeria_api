@@ -13,6 +13,6 @@ const ingredienteSchema=new Schema({
     imgUrl:{type:String},
     id_producto:[{ref:"productos",type:Schema.Types.ObjectId}],
     
-},{versionKey:false})
+},{versionKey:false,timestamps: true})
 module.exports.ingredienteRelationSchema=ingredienteRelationSchema;
 export default model('Ingrediente',ingredienteSchema);

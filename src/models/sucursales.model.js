@@ -7,6 +7,5 @@ const sucursalSchema=new Schema({
     horario_apertura:{type:Date,required:true},
     horario_cierre:{type:Date,required:true},
     direccion:{type:direccionesSchema},
-    
-},{versionKey:false})
+},{versionKey:false,timestamps: true})
 export default model('Sucursales',sucursalSchema);

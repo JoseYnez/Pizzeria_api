@@ -1,5 +1,7 @@
 import { Schema,model } from "mongoose";
 
+
+
 const productoRelationSchema=new Schema({
     id_producto:{type:Schema.Types.ObjectId},
     precio:{type:Number},
@@ -17,7 +19,7 @@ const productoSchema=new Schema({
     imgUrl:{type:String},
     tipo:{type:String,required:true},
     
-},{versionKey:false})
+},{versionKey:false,timestamps: true})
 module.exports.productoRelationSchema=productoRelationSchema;
 module.exports.arrayObjectIdSchema=arrayObjectIdSchema;
 export default model('Producto',productoSchema);

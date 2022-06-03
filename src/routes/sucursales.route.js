@@ -69,7 +69,7 @@ export default router;
   * paths:
   *  /api/sucursales/createSucursal:
   *   post:
-  *      summary: Crea una sucursal nueva.
+  *      summary: Crea una sucursal nueva, solo si el empleado tiene rango de admin.
   *      tags: [Sucursal]
   *      parameters:
   *       - name: token
@@ -94,7 +94,7 @@ export default router;
   * paths:
   *  /api/sucursales/dropSucursal/{sucursalId}:
   *   delete:
-  *      summary: Elimina una sucursal con base de id.
+  *      summary: Elimina una sucursal con base de id, solo si el empleado tiene rango de admin.
   *      tags: [Sucursal]
   *      parameters:
   *       - in: path
@@ -117,7 +117,7 @@ export default router;
   * paths:
   *  /api/sucursales/updateSucursal:
   *   put:
-  *      summary: Actualiza una sucursal.
+  *      summary: Actualiza una sucursal, solo si el empleado tiene rango de admin.
   *      tags: [Sucursal]
   *      parameters:
   *       - name: token

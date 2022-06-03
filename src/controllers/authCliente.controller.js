@@ -10,7 +10,7 @@ export const clienteSingUp=async (req,res)=>{
     try {
             const saveCliente=await cliente.save();
             const token=jwt.sign({_id:saveCliente._id,correo:saveCliente.correo},config.secret);
-            res.status(201).send({token});
+            res.status(201).send({token:token});
         } catch (error) {
             res.status(404).send(false);
         }

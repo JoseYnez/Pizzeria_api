@@ -1,16 +1,20 @@
 import { Router } from "express";
 import * as empleadoController from "../controllers/empleados.controller"
 import { verifyToken } from "../middlewares/authjwt";
-import { verifyTokenEmpleado,EmpleadoIsAdmin } from "../middlewares/authjwt";
+import { verifyTokenEmpleado,EmpleadoIsAdmin,EmpleadoIsGerente} from "../middlewares/authjwt";
 
 const router=Router();
 
-router.get('/',verifyTokenEmpleado,empleadoController.getEmpleados);
-router.get('/:id',empleadoController.getEmpleadoById);
-router.post('/findBySucursales',verifyTokenEmpleado,EmpleadoIsAdmin,empleadoController.getEmpleadoBySucursal);
+router.get('/',verifyTokenEmpleado,EmpleadoIsGerente,empleadoController.getEmpleados);
+router.get('/obtenerEmpleado',verifyTokenEmpleado,empleadoController.getEmpleado);
+router.get('/:id',verifyTokenEmpleado,EmpleadoIsGerente,empleadoController.getEmpleadoById);
+router.post('/findByArguments',verifyTokenEmpleado,EmpleadoIsAdmin,empleadoController.getEmpleadoBySucursal);
 router.post('/createEmpleado',verifyTokenEmpleado,EmpleadoIsAdmin,empleadoController.createEmpleado);
-router.put('/updateEmpleado',verifyTokenEmpleado,empleadoController.updateEmpleadoById);
-router.delete('/dropEmpleado',verifyTokenEmpleado,EmpleadoIsAdmin,empleadoController.dropEmpleadolById);
+router.put('/changePasswd',verifyTokenEmpleado,empleadoController.changePassword);
+router.put('/updateEmpleadoAdmin',verifyTokenEmpleado,EmpleadoIsAdmin,empleadoController.updateEmpleadoAdmin);
+router.put('/updateEmpleado',verifyTokenEmpleado,empleadoController.updateEmpleado);
+router.put('/updateEmpleadoStatus',verifyTokenEmpleado,EmpleadoIsAdmin,empleadoController.updateEmpleadoStatus);
+
 
 
 export default router;
@@ -27,7 +31,7 @@ export default router;
  * paths:
  *  /api/empleados/: 
  *   get:
- *      summary: Muestra todos los empleados.
+ *      summary: Muestra todos los empleados solo cuando un empleado con rango de gerente o superior lo solicita.
  *      tags: [Empleado]
  *      parameters:
  *       - name: token
@@ -51,7 +55,7 @@ export default router;
  * paths:
  *  /api/empleados/{empleadoId}:
  *   get:
- *      summary: Muestra un empleado por id.
+ *      summary: Muestra un empleado por id solo cuando un empleado con rango de gerente o superior lo solicita..
  *      tags: [Empleado]
  *      parameters:
  *       - in: path 
@@ -75,12 +79,36 @@ export default router;
  *              $ref: '#/components/schemas/EmpleadoConId'
  */
 
+/**
+ * @swagger
+ * paths:
+ *  /api/empleados/obtenerEmpleado: 
+ *   get:
+ *      summary: Muestra el empleado al que coresponde el token solo si es empleado.
+ *      tags: [Empleado]
+ *      parameters:
+ *       - name: token
+ *         in: header
+ *         description: an authorization token
+ *         required: true
+ *         type: string
+ *      responses:
+ *          200:
+ *           description: un empleado
+ *           content:
+ *            application/json:
+ *             schema:
+ *              type: object
+ *              $ref: '#/components/schemas/EmpleadoConId'
+ */
+
+
  /**
   * @swagger
   * paths:
   *  /api/empleados/createEmpleado:
   *   post:
-  *      summary: Crea un empleado nuevo.
+  *      summary: Crea un empleado nuevo solo cuando un empleado con rango de admin lo solicita..
   *      tags: [Empleado]
   *      parameters:
   *       - name: token
@@ -103,9 +131,9 @@ export default router;
  /**
   * @swagger
   * paths:
-  *  /api/empleados/findBySucursales:
+  *  /api/empleados/findByArguments:
   *   post:
-  *      summary: Busca todos los empleados que coincidad con las caracteristicas dadas
+  *      summary: Busca todos los empleados que coincidad con las caracteristicas dadas, solo cuando un empleado con rango de gerente o superior lo solicita.
   *      tags: [Empleado]
   *      parameters:
   *       - name: token
@@ -130,41 +158,23 @@ export default router;
   *               items:
   *                type: string
   *                example: general
-  *      responses:
-  *       201:
-  *        description: Empleado creado.
+ *      responses:
+ *          200:
+ *           description: todas las sucursales
+ *           content:
+ *            application/json:
+ *             schema:
+ *              type: array
+ *              items:
+ *               $ref: '#/components/schemas/EmpleadoConId'
   */
  
- /**
+/**
   * @swagger
   * paths:
-  *  /api/empleados/dropEmpleado/{empleadoId}:
-  *   delete:
-  *      summary: Elimina un empleado con base de id.
-  *      tags: [Empleado]
-  *      parameters:
-  *       - in: path
-  *         name: empleadoId
-  *         type: string
-  *         example: 628efef49f06f4dbaa90872f
-  *         required: true
-  *         description: ID del empleado a eliminar.
-  *       - name: token
-  *         in: header
-  *         description: an authorization token
-  *         required: true
-  *         type: string
-  *      responses:
-  *        '204':
-  *          description: OK
-  */
-
- /**
-  * @swagger
-  * paths:
-  *  /api/empleados/updateEmpleado:
+  *  /api/empleados/updateEmpleadoAdmin:
   *   put:
-  *      summary: Actualiza un empleado.
+  *      summary: Actualiza cualquier empleado, solo cuando un empleado con rango de admin lo solicita..
   *      tags: [Empleado]
   *      parameters:
   *       - name: token
@@ -189,6 +199,140 @@ export default router;
   *           $ref: '#/components/schemas/EmpleadoConId'
   *         
   */
+
+ /**
+  * @swagger
+  * paths:
+  *  /api/empleados/updateEmpleado:
+  *   put:
+  *      summary: Actualiza a el empleado dueño del token, pero el empleado no deberia poder modificar nada.
+  *      tags: [Empleado]
+  *      parameters:
+  *       - name: token
+  *         in: header
+  *         description: an authorization token
+  *         required: true
+  *         type: string
+  *      requestBody:
+  *          required: true
+  *          content:
+  *           application/json:
+  *            schema:
+  *             type: object 
+  *             $ref: '#/components/schemas/EmpleadoConId'   
+  *      responses:
+  *       201:
+  *        description: empleado actualizada.
+  *        content:
+  *         application/json:
+  *          schema:
+  *           type: object
+  *           $ref: '#/components/schemas/EmpleadoConId'
+  *         
+  */
+
+
+ /**
+  * @swagger
+  * paths:
+  *  /api/empleados/changePasswd:
+  *   put:
+  *      summary: Cambia la contraseña del token enviado solo empleados.
+  *      tags: [Empleado]
+  *      parameters:
+  *       - name: token
+  *         in: header
+  *         description: an authorization token
+  *         required: true
+  *         type: string
+  *      requestBody:
+  *          required: true
+  *          content:
+  *           application/json:
+  *            schema:
+  *             type: object 
+  *             properties:
+  *              _id:
+  *               type: string
+  *               example: 6293e1c2175e120dbb9daf95   
+  *              passwd:
+  *               type: string
+  *               example: clave
+  *              passwdn:
+  *               type: string
+  *               example: nuevaclave
+  *      responses:
+  *       201:
+  *        description: Empleado creado.
+  */
+
+
+ /**
+  * @swagger
+  * paths:
+  *  /api/empleados/updateEmpleadoStatus:
+  *   put:
+  *      summary: Actualiza el estado un empleado, solo cuando un empleado con rango de admin lo solicita.
+  *      tags: [Empleado]
+  *      parameters:
+  *       - name: token
+  *         in: header
+  *         description: an authorization token
+  *         required: true
+  *         type: string
+  *      requestBody:
+  *          required: true
+  *          content:
+  *           application/json:
+  *            schema:
+  *             type: object 
+  *             properties:
+  *              _id:
+  *               type: string
+  *               example: 6293e1c2175e120dbb9daf95   
+  *              activo:
+  *               type: boolean
+  *               example: false
+  *              razon:
+  *               type: string
+  *               example: "Despido"
+  *      responses:
+  *       201:
+  *        description: empleado actualizada.
+  *        content:
+  *         application/json:
+  *          schema:
+  *           type: object
+  *           $ref: '#/components/schemas/EmpleadoConId'
+  *         
+  */
+
+
+ /**
+  * @swagger
+  * paths:
+  *  /api/empleados/dropEmpleado/{empleadoId}:
+  *   delete:
+  *      summary: Elimina un empleado con base de id, solo cuando un empleado con rango de admin lo solicita.
+  *      tags: [Empleado]
+  *      parameters:
+  *       - in: path
+  *         name: empleadoId
+  *         type: string
+  *         example: 628efef49f06f4dbaa90872f
+  *         required: true
+  *         description: ID del empleado a eliminar.
+  *       - name: token
+  *         in: header
+  *         description: an authorization token
+  *         required: true
+  *         type: string
+  *      responses:
+  *        '204':
+  *          description: OK
+  */
+
+ 
 
  ////////////Schemas
 /** 

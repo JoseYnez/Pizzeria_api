@@ -1,14 +1,16 @@
 import { Router } from "express";
 import * as clienteController from "../controllers/clientes.controller"
-import { verifyToken } from "../middlewares/authjwt";
+import { verifyToken,verifyTokenEmpleado,EmpleadoIsAdmin } from "../middlewares/authjwt";
 
 const router=Router();
 
-router.get('/',clienteController.getClientes);
-router.get('/:id',clienteController.getClienteById);
-router.post('/createCliente',clienteController.createCliente);
-router.put('/updateCliente',clienteController.updateClienteById);
-router.delete('/dropCliente',clienteController.dropClientelById);
+//router.post('/createCliente',clienteController.createCliente);
+router.get('/',verifyTokenEmpleado,EmpleadoIsAdmin,clienteController.getClientes);
+router.get('/:id',verifyTokenEmpleado,EmpleadoIsAdmin,clienteController.getClienteById);
+router.get('/getCliente',verifyToken,clienteController.getCliente);
+router.put('/updateCliente',verifyToken,clienteController.updateCliente);
+router.put('/changePasswd',verifyToken,clienteController.changePassword);
+router.delete('/dropCliente',verifyTokenEmpleado,EmpleadoIsAdmin,clienteController.dropClientelById);
 
 
 export default router;
