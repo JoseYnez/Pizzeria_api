@@ -10,13 +10,19 @@ export const createCupon=async (req,res)=>{
     }
 }
 
+
 export const updateCuponById=async (req,res)=>{
     const cupon=await Cupon.findByIdAndUpdate(req.body._id,req.body,{new:true});
-    res.status(201).json(cupon);
+    res.status(201).json();
 }
 
 export const getCupones=async (req,res)=>{
     const cupones=await Cupon.find();
+    res.status(200).json(cupones);
+}
+
+export const getValidCupones=async (req,res)=>{
+    const cupones=await Cupon.find({vencimiento:{$lt:Date()}});
     res.status(200).json(cupones);
 }
 

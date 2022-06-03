@@ -1,6 +1,5 @@
 import { Router } from "express";
 import * as empleadoController from "../controllers/empleados.controller"
-import { verifyToken } from "../middlewares/authjwt";
 import { verifyTokenEmpleado,EmpleadoIsAdmin,EmpleadoIsGerente} from "../middlewares/authjwt";
 
 const router=Router();

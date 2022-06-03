@@ -34,7 +34,7 @@ const cuponSchema=new Schema({
     titulo:{type:String},
     restricciones:{type:String},
     imgUrl:{type:String},
-    venimiento:{type:Date},
+    vencimiento:{type:Date},
     rest_pizza:[carcteristicasPizzaSchema],
     rest_producto:[carcteristicasProductoSchema],
 },{versionKey:false});
