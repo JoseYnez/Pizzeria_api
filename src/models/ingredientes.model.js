@@ -11,7 +11,7 @@ const ingredienteSchema=new Schema({
     medida:{type:String},
     precio_porcion:{type:Number},
     imgUrl:{type:String},
-    id_producto:[{ref:"productos",type:Schema.Types.ObjectId}],
+    id_producto:{ref:"productos",type:Schema.Types.ObjectId},
     
 },{versionKey:false,timestamps: true})
 module.exports.ingredienteRelationSchema=ingredienteRelationSchema;

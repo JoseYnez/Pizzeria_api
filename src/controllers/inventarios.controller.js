@@ -1,4 +1,6 @@
-import Inventario from "../models/inventario.model";
+import Inventario from "../models/inventarios.model";
+import Producto from "../models/productos.model";
+import Sucursal from "../models/sucursales.model";
 
 export const getInventarios=async (req,res)=>{
     const inventarios=await Inventario.find();
@@ -58,14 +60,88 @@ export const createInventario=async (req,res)=>{
 }
 
 export const updateInventarioById=async (req,res)=>{
-    const inventario=await Inventario.findByIdAndUpdate(req.body._id,req.body,{new:true});
-    res.status(201).json(inventario);
+    const existsS=Inventario.findById(req.body.id_sucursal);
+    const existsP=Inventario.findById(req.body.id_producto);
+    if(exists) {
+        const inventario=await Inventario.findByIdAndUpdate(req.body._id,req.body,{new:true});
+        res.status(201).json(inventario);
+    }else{
+        res.status(201).json(inventario);
+    }
+    
 }
 
-export const updateCantidadproductos=async (req,res)=>{
-    const inventario=await Inventario.findByIdAndUpdate(req.body._id,req.body,{new:true});
-    res.status(201).json(inventario);
+export const updateInventario=async (req,res)=>{
+    try {
+        let i=0;
+        let band=false;
+        while(req.body.length>i){
+            const existsS=await Sucursal.findById(req.body[i].id_sucursal,{_id:1});
+            const existsP=await Producto.findById(req.body[i].id_producto,{_id:1});
+            if(!existsP || !existsS) band=true;
+            i++
+        }
+        if(!band){
+            i=0;
+            while(req.body.length>i){
+                const inventario=await Inventario.findOne({id_sucursal:req.body[i].id_sucursal,id_producto:req.body[i].id_producto})
+                if(inventario){
+                    const newinventario=await Inventario.findByIdAndUpdate(inventario._id,req.body[i],{new:true});
+                    console.log("se actualizo")
+                    console.log(newinventario)}
+                else{
+                    const ninventario=new Inventario(req.body[i]);
+                    const newinventario=await ninventario.save();
+                    console.log("se creo")
+                    console.log(newinventario)
+                }
+                i++
+            }
+        }
+        return res.status(204).json();
+    } catch (error) {
+        return res.status(404).json();
+    }
+    res.status(404).json(req.body);
 }
+
+
+export const updateCantidadInventario=async (req,res)=>{
+    try {
+        let i=0;
+        let band=false;
+        while(req.body.length>i){
+            const existsS=await Sucursal.findById(req.body[i].id_sucursal,{_id:1});
+            const existsP=await Producto.findById(req.body[i].id_producto,{_id:1});
+            if(!existsP || !existsS) band=true;
+            i++
+        }
+        if(!band){
+            i=0;
+            while(req.body.length>i){
+                const inventario=await Inventario.findOne({id_sucursal:req.body[i].id_sucursal,id_producto:req.body[i].id_producto})
+                if(inventario){
+                    inventario.cantidad+=req.body[i].cantidad;
+                    const newinventario=await Inventario.findByIdAndUpdate(inventario._id,inventario,{new:true});
+                    console.log("se actualizo")
+                    console.log(newinventario)}
+                else{
+                    if(inventario.cantidad>=0){
+                    const ninventario=new Inventario(req.body[i]);
+                    const newinventario=await ninventario.save();
+                    console.log("se creo")
+                    console.log(newinventario)}
+                }
+                i++
+            }
+        }
+        return res.status(204).json();
+    } catch (error) {
+        return res.status(404).json();
+    }
+    res.status(404).json(req.body);
+}
+
 
 export const dropInventarioById=async (req,res)=>{
     const {id}=req.params;
