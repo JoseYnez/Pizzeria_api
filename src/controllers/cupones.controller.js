@@ -22,7 +22,7 @@ export const getCupones=async (req,res)=>{
 }
 
 export const getValidCupones=async (req,res)=>{
-    const cupones=await Cupon.find({vencimiento:{$lt:Date()}});
+    const cupones=await Cupon.find({vencimiento:{"$gte":Date()}});
     res.status(200).json(cupones);
 }
 
