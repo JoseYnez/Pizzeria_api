@@ -7,6 +7,7 @@ router.get('/',productoController.getProductos);
 router.get('/cliente',productoController.getProductosNoI);
 router.get('/cliente/:id',productoController.getProductoNoI);
 router.get('/:id',verifyToken,productoController.getProducto);
+router.get('/bySucursal/:id',productoController.getProductosBySucursalNoI);
 router.post('/createProducto',productoController.createProducto);
 router.post('/findByAtributes',productoController.getProductoQuery);
 router.put('/updateProducto',verifyToken,productoController.updateProductoById);
@@ -177,6 +178,62 @@ export default router;
  *                 type: string
  *                 example: ingrediente
  *                 required: true
+ */ 
+
+/**
+ * @swagger
+ * paths:
+ *  /api/productos/bySucursal/{idsucursal}: 
+ *   get:
+ *      summary: Muestra un producto solo cuando no es de tipo ingrediente.
+ *      tags: [Productos]
+ *      parameters:
+ *       - in: path 
+ *         name: idsucursal
+ *         type: string
+ *         example: 628efef49f06f4dbaa90872f
+ *         required: true
+ *         description: ID de la sucursal a obtener todos los productos.
+ *      responses:
+ *          200:
+ *           description: productos buscados
+ *           content:
+ *            application/json:
+ *             schema:
+ *              type: object
+ *              properties:
+ *               _id:
+ *                type: string
+ *                example: 628b24b51870e03f354f51a1
+ *                required: true
+ *               nombre:
+ *                type: string
+ *                example: Queso motzarela
+ *                required: true
+ *               marca:
+ *                type: string
+ *                example: Caperucita
+ *                required: true
+ *               contenido:
+ *                type: number
+ *                example: 10
+ *                required: true
+ *               medida:
+ *                type: date
+ *                example: kilogramo
+ *                required: true
+ *               imgUrl:
+ *                type: string
+ *                example: www.img.jpg
+ *                required: true
+ *               tipo:
+ *                type: string
+ *                example: ingrediente
+ *                required: true
+ *               cantidad:
+ *                type: number
+ *                example: 10
+ *                required: true
  */ 
 
 /**

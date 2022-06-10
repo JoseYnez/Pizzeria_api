@@ -1,4 +1,4 @@
-import { Schema,Types} from "mongoose";
+import { Schema,Types,objectId} from "mongoose";
 import Producto from "../models/productos.model";
 
 export const createProducto=async (req,res)=>{
@@ -19,13 +19,24 @@ export const getProductoNoI=async (req,res)=>{
     const producto=await Producto.find({_id:req.params.id,tipo:{ $ne: "ingrediente" }});
     res.status(200).json(producto);
 }
+export const getProductosBySucursalNoI=async (req,res)=>{
+    const idsucursal =Types.ObjectId(req.params.id);
+    const productos=await Producto.aggregate([{$lookup: {from: 'inventarios',localField: '_id',foreignField: 'id_producto',as: 'inventario'}}, {$unwind: {path: '$inventario'}}, {$addFields: {cantidad: '$inventario.cantidad'}}, {$match: {'inventario.id_sucursal': idsucursal,tipo: {$ne: 'ingrediente'}}}, {$project: {inventario: 0}}])
+    res.status(200).json(productos);
+}
 export const getProductos=async (req,res)=>{
     const productos=await Producto.find();
     res.status(200).json(productos);
 
 }
+
+export const getProductosFind=async (req,res)=>{
+    const productos=await Producto.find();
+    res.status(200).json(productos);
+
+}
 export const getProductosNoI=async (req,res)=>{
-    const productos=await Producto.find({tipo:{ $ne: "ingrediente" }});
+    const productos=await Producto.aggregate([{$lookup: {from: 'inventarios',localField: '_id',foreignField: 'id_producto',as: 'inventario'}}, {$unwind: {path: '$inventario'}}, {$addFields: {cantidad: '$inventario.cantidad'}}, {$match: {'inventario.id_sucursal': ObjectId('628e6181f2dff81358711d7e'),tipo: {$ne: 'ingrediente'}}}, {$project: {inventario: 0}}])
     res.status(200).json(productos);
 
 }

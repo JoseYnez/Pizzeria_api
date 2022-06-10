@@ -1,10 +1,19 @@
 import { Schema,model } from "mongoose";
 import {ingredienteRelationSchema} from "./ingredientes.model";
 
-const pizzaRelationSchema=new Schema({
-    id_pizza:{type:Schema.Types.ObjectId},
+const tamaños=["chica","mediana","grande","familiar"];
+const pizzatamanosSchema=new Schema({
+    tamaño:{type:String},
     precio:{type:Number},
-    ingredientes:[ingredienteRelationSchema]
+    ingredientes:[ingredienteRelationSchema],
+});
+
+const pizzaRelationSchema=new Schema({
+    nombre:{type:String,unique:true},
+    precio:{type:Number},
+    categoria:{type:Number},
+    info:{type:pizzatamanosSchema},
+    id_pizza:{type:Schema.Types.ObjectId}
 })
 
 const pizzaSchema=new Schema({
@@ -13,9 +22,21 @@ const pizzaSchema=new Schema({
     tamaño:{type:String},
     categoria:{type:Number},
     imgUrl:{type:String},
-    calificacion:{type:Number},
+    calificacion:{type:Number,default:null},
     ingredientes:[ingredienteRelationSchema]
     
 },{versionKey:false,timestamps: true})
+
+
+
+const pizza2Schema=new Schema({
+    nombre:{type:String,unique:true},
+    categoria:{type:String},
+    imgUrl:{type:String},
+    calificacion:{type:Number},
+    tamaños:[pizzatamanosSchema],
+    
+},{versionKey:false,timestamps: true})
+
 module.exports.pizzaRelationSchema=pizzaRelationSchema;
-export default model('Pizza',pizzaSchema);
+export default model('Pizza',pizza2Schema);

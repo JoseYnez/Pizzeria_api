@@ -1,4 +1,5 @@
 import Ingrediente from "../models/ingredientes.model";
+import { Schema,Types,objectId} from "mongoose";
 
 export const createIngrediente=async (req,res)=>{
     try {
@@ -19,6 +20,35 @@ export const getIngredientes=async (req,res)=>{
     const ingredientes=await Ingrediente.find();
     res.status(200).json(ingredientes);
 }
+export const getIngredientesBySucrsal=async (req,res)=>{
+    const {id}=req.params;
+    const idSucursal=Types.ObjectId(id)
+    const ingredientes=await Ingrediente.aggregate([{
+        $lookup: {
+         from: 'ingredientesucursales',
+         localField: '_id',
+         foreignField: 'id_ingrediente',
+         as: 'inventario'
+        }
+       }, {
+        $unwind: {
+         path: '$inventario'
+        }
+       }, {
+        $match: {
+         'inventario.id_sucursal': idSucursal
+        }
+       }, {
+        $addFields: {
+         cantidad_porciones: '$inventario.cantidad_porciones'
+        }
+       }, {
+        $project: {
+         inventario: 0
+        }
+       }])
+    res.status(200).json(ingredientes);
+}
 
 export const dropIngredienteById=async (req,res)=>{
     const {id}=req.params;
@@ -27,3 +57,5 @@ export const dropIngredienteById=async (req,res)=>{
     else
     res.status(404).json();
 }
+
+
