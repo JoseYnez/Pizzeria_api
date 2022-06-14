@@ -316,6 +316,9 @@ export default router;
 *       id_ingrediente:
 *         type: ObjectId
 *         example: 62a264bb37165f1be68ed829
+*       nombre:
+*         type: string
+*         example: Queso
 *       porciones:
 *         type: number
 *         example: 3

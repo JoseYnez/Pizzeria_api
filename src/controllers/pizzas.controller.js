@@ -17,6 +17,7 @@ export const updatePizzaById=async (req,res)=>{
 
 export const getPizzas=async (req,res)=>{
     const pizzas=await Pizza.find();
+    console.log(pizzas[0].tamaños[0])
     res.status(200).json(pizzas);
 }
 

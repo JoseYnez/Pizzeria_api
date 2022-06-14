@@ -2,6 +2,7 @@ import { Schema,model } from "mongoose";
 
 const ingredienteRelationSchema=new Schema({
     id_ingrediente:{type:Schema.Types.ObjectId},
+    nombre:{type:String},
     porciones:{type:Number},
 })
 

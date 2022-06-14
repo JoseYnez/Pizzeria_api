@@ -1,17 +1,18 @@
 import { Router } from "express";
 import * as inventarioController from "../controllers/inventarios.controller"
 import { verifyToken } from "../middlewares/authjwt";
+import { EmpleadoIsGerente} from "../middlewares/authjwt";
 
 const router=Router();
 
-router.get('/',inventarioController.getInventarios);
+router.get('/',EmpleadoIsGerente,inventarioController.getInventarios);
 //router.get('/:id',inventarioController.getInventarioById);
 //router.post('/',inventarioController.getInventarioByQuery);
 //router.post('/createInventario',inventarioController.createInventario);
 //router.put('/updateInventario',inventarioController.updateInventarioById);
-router.put('/updateInventarios',inventarioController.updateInventario);
-router.put('/updateCantidadInventarios',inventarioController.updateCantidadInventario);
-router.put('/updateInventarioBySucursal/:id',inventarioController.updateInventarioWithBitacora);
+router.put('/updateInventarios',EmpleadoIsGerente,inventarioController.updateInventario);
+router.put('/updateCantidadInventarios',EmpleadoIsGerente,inventarioController.updateCantidadInventario);
+router.put('/updateInventarioBySucursal/:id',EmpleadoIsGerente,inventarioController.updateInventarioWithBitacora);
 //router.delete('/dropInventario',inventarioController.dropInventarioById);
 
 
