@@ -1,13 +1,11 @@
 import { Router } from "express";
 import * as clienteController from "../controllers/clientes.controller"
 import { verifyToken,verifyTokenEmpleado,EmpleadoIsAdmin } from "../middlewares/authjwt";
-
 const router=Router();
 
-//router.post('/createCliente',clienteController.createCliente);
-router.get('/',verifyTokenEmpleado,EmpleadoIsAdmin,clienteController.getClientes);
-router.get('/:id',verifyTokenEmpleado,EmpleadoIsAdmin,clienteController.getClienteById);
-router.get('/getCliente',verifyToken,clienteController.getCliente);
+router.get('/',EmpleadoIsAdmin,clienteController.getClientes);
+router.get('/:id',EmpleadoIsAdmin,clienteController.getClienteById);
+router.post('/obtenerCliente',verifyToken,clienteController.getCliente);
 router.put('/updateCliente',verifyToken,clienteController.updateCliente);
 router.put('/changePasswd',verifyToken,clienteController.changePassword);
 router.delete('/dropCliente',verifyTokenEmpleado,EmpleadoIsAdmin,clienteController.dropClientelById);
@@ -209,8 +207,8 @@ export default router;
 /**
  * @swagger
  * paths:
- *  /api/clientes/getCliente: 
- *   get:
+ *  /api/clientes/obtenerCliente: 
+ *   post:
  *      summary: Muestra la informacion del cliente al que pertenece el token.
  *      tags: [Cliente]
  *      parameters:
@@ -221,7 +219,7 @@ export default router;
  *         type: string
  *      responses:
  *          200:
- *           description: todas los empleados
+ *           description: el cliente
  *           content:
  *            application/json:
  *             schema:
@@ -454,4 +452,5 @@ export default router;
  *                required: true
  *      responses:
  *          201:
+ *           description: correcto
  */

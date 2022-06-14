@@ -2,10 +2,11 @@ import jwt from "jsonwebtoken";
 import config from "../config";
 import Cliente from "../models/clientes.model";
 import Empleado from "../models/empleados.model";
+
+
 export const verifyToken=async(req,res,next)=>{
     try {
         const token=req.headers["token"];
-        console.log(token);
         if(!token) return res.status(403).json({message:"No token provider"});
         const decode=jwt.verify(token,config.secret);
         console.log(decode);
@@ -19,16 +20,32 @@ export const verifyToken=async(req,res,next)=>{
     
 }
 
+
+
 export const verifyTokenEmpleado=async(req,res,next)=>{
+    console.log("empleado")
     try {
         const token=req.headers["token"];
+        //console.log(token);
         if(!token) return res.status(403).json({message:"No token provider"});
         const decode=jwt.verify(token,config.superscret);
         const cliente=await Empleado.findOne({_id:decode._id,correo:decode.correo},{_id:1});
-        if(!cliente) return res.status(403).json({message:"No token provider"});
+        if(!cliente) return res.status(403).json({message:"No token valid"});
         next();  
     } catch (error) {
         
+        return res.status(401).json({message:"No authorization"});
+    }
+    
+}
+
+export const verifyTokenCliente=async(req,res,next)=>{
+    console.log("cliente")
+    try {
+        const token=req.headers["token"];
+        console.log(token);
+        next();  
+    } catch (error) {
         return res.status(401).json({message:"No authorization"});
     }
     

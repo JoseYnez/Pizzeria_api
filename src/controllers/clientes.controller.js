@@ -1,4 +1,6 @@
 import Cliente from "../models/clientes.model";
+import jwt from "jsonwebtoken";
+import config from "../config";
 
 export const getClientes=async (req,res)=>{
     try {
@@ -65,7 +67,7 @@ export const changePassword=async (req,res)=>{
         if(req.body._id==decode._id){
         const clienteFound=await Cliente.findOne({_id:req.body._id},{_id:1,passwd:1});
         if(!clienteFound) return res.status(404).json(null);
-        const matchPasswd=await Empleado.comparePasswd(req.body.passwd,empleadoFound.passwd);
+        const matchPasswd=await Cliente.comparePasswd(req.body.passwd,clienteFound.passwd);
         if(!matchPasswd) return res.status(401).json(null);
         else {
             const cliente=await Cliente.findByIdAndUpdate(req.body._id,{passwd:await Cliente.ecryptPasswd(req.body.passwdn)},{new:true});
@@ -74,6 +76,7 @@ export const changePassword=async (req,res)=>{
     }}
     else res.status(401).json(null);
     } catch (error) {
+        console.log(error)
         res.status(401).json(null);
     }
     
