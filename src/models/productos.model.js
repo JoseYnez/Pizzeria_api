@@ -4,6 +4,8 @@ import { Schema,model } from "mongoose";
 
 const productoRelationSchema=new Schema({
     id_producto:{type:Schema.Types.ObjectId},
+    nombre: {type:String},
+    cantidad:{type:Number},
     precio:{type:Number},
 })
 

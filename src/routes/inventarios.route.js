@@ -11,6 +11,7 @@ router.get('/',inventarioController.getInventarios);
 //router.put('/updateInventario',inventarioController.updateInventarioById);
 router.put('/updateInventarios',inventarioController.updateInventario);
 router.put('/updateCantidadInventarios',inventarioController.updateCantidadInventario);
+router.put('/updateInventarioBySucursal/:id',inventarioController.updateInventarioWithBitacora);
 //router.delete('/dropInventario',inventarioController.dropInventarioById);
 
 
@@ -125,6 +126,44 @@ export default router;
  *               id_sucursal:
  *                type: objectId
  *                example: 628e6181f2dff81358711d7e
+ *               id_producto:
+ *                type: objectId
+ *                example: 628e6181f2dff81358711d7e
+ *               cantidad:
+ *                type: number
+ *                example: 10
+ *      responses:
+ *          204:
+ *           description: se agregaron todos los cambios
+ */ 
+
+/**
+ * @swagger
+ * paths:
+ *  /api/inventarios/updateInventarioBySucursal/{id}: 
+ *   put:
+ *      summary: Genera el inventario diario, y actualiza los ingredientes por sucursal, asi como generar la bitacora diaria.
+ *      tags: [Inventario]
+ *      parameters:
+ *       - name: token
+ *         in: header
+ *         description: an authorization token
+ *         required: true
+ *         type: string
+ *       - name: id
+ *         in: path
+ *         description: idsucursal
+ *         required: true
+ *         type: string
+ *      requestBody:
+ *          required: true
+ *          content:
+ *           application/json:
+ *            schema:
+ *             type: array
+ *             items:
+ *              type: object
+ *              properties:
  *               id_producto:
  *                type: objectId
  *                example: 628e6181f2dff81358711d7e

@@ -2,14 +2,19 @@ import { Schema,Types,objectId} from "mongoose";
 import Producto from "../models/productos.model";
 
 export const createProducto=async (req,res)=>{
-    const producto=new Producto(req.body);
-    const productos=await Producto.find({nombre:producto.nombre,marca:producto.marca,contenido:producto.contenido,medida:producto.medida,tipo:producto.tipo});
-    if (productos.length===0){
-    const nproducto=await producto.save();
-    res.status(201).json();}
-    else{
+    try {
+        const producto=new Producto(req.body);
+        const productos=await Producto.find({nombre:producto.nombre,marca:producto.marca,contenido:producto.contenido,medida:producto.medida,tipo:producto.tipo});
+        if (productos.length===0){
+        const nproducto=await producto.save();
+        res.status(201).json();}
+        else{
+            res.status(404).json();
+        }
+    } catch (error) {
         res.status(404).json();
     }
+
 }
 export const getProducto=async (req,res)=>{
     const producto=await Producto.findById(req.params.id);

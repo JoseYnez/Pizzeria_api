@@ -308,10 +308,6 @@ export default router;
  *            schema:
  *             type: object
  *             properties:
- *              _id:
- *               type: string
- *               example: 628b24b51870e03f354f51a1
- *               required: true
  *              nombre:
  *               type: string
  *               example: Queso motzarela

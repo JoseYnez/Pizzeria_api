@@ -9,9 +9,9 @@ const pizzatamanosSchema=new Schema({
 });
 
 const pizzaRelationSchema=new Schema({
-    nombre:{type:String,unique:true},
+    nombre:{type:String},
     precio:{type:Number},
-    categoria:{type:Number},
+    categoria:{type:String},
     info:{type:pizzatamanosSchema},
     id_pizza:{type:Schema.Types.ObjectId}
 })

@@ -15,8 +15,8 @@ export const updatePorcionesIngrediente=async (req,res)=>{
 export const updatePorcionesIngredienteBySucursal=async (req,res)=>{
     try {
         const {id}=req.params;
-    const idSucursal=Types.ObjectId(id)
-    const productos=await Inventario.aggregate([{
+        const idSucursal=Types.ObjectId(id)
+        const productos=await Inventario.aggregate([{
         $lookup: {
          from: 'productos',
          localField: 'id_producto',
