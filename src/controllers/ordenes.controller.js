@@ -110,8 +110,9 @@ export const createOrden=async (req,res)=>{
             }
             const id_empleado=null;
             const orden=new Orden({total,id_cliente,id_cupon,id_empleado,id_sucursal,pizzas,productos});
+            const a=await orden.save();
+            //console.log(a);
             const repuesta={creado:true,pizzas:nPizzas,productos:nProductos,cupon:true}
-            await orden.save();
             res.status(201).json(repuesta);
         }
 
