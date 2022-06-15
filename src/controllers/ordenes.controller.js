@@ -4,9 +4,15 @@ import IngredienteSucursal from "../models/ingredientesSucursal.model";
 import Inventario from "../models/inventarios.model";
 import Cupon from "../models/cupones.model";
 import { Types } from "mongoose";
+import jwt from "jsonwebtoken";
+import config from "../config";
 
 export const createOrden=async (req,res)=>{
     try {
+        const token=req.headers["token"];
+        if(!token) return res.status(403).json({message:"No token provider"});
+        const decode=jwt.verify(token,config.secret);
+
         const productoss=req.body.productos;
         const empleados=await Empleado.find({id_sucursal:req.body.id_sucursal,activo:true})
         const cupon=await Cupon.findById(req.body.id_cupon);
@@ -89,7 +95,7 @@ export const createOrden=async (req,res)=>{
             res.status(201).json(repuesta);
         }else{
             
-            const {total,id_cliente,id_cupon,id_sucursal,pizzas,productos}=req.body;
+            const {total,id_cupon,id_sucursal,pizzas,productos}=req.body;
             const ingredientesSucursal3=await IngredienteSucursal.find({id_sucursal:req.body.id_sucursal},{_id:0,id_sucursal:0})
             for(i=0;i<ingredientesSucursal2.length;i++){
                 if(ingredientesSucursal2[i].cantidad_porciones>0){
@@ -109,6 +115,7 @@ export const createOrden=async (req,res)=>{
                 }
             }
             const id_empleado=null;
+            const id_cliente=decode._id
             const orden=new Orden({total,id_cliente,id_cupon,id_empleado,id_sucursal,pizzas,productos});
             const a=await orden.save();
             //console.log(a);
