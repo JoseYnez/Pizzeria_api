@@ -49,7 +49,9 @@ export const updateCliente=async (req,res)=>{
         const token=req.headers["token"];
         const decode=jwt.verify(token,config.secret);
         if(req.body._id==decode._id){
-            const cliente=await Cliente.findByIdAndUpdate(req.body._id,req.body,{new:true});
+            const {_id,telefono,direcciones}=req.body;
+            const info={_id:_id,telefono:telefono,direcciones:direcciones}
+            const cliente=await Cliente.findByIdAndUpdate(req.body._id,info,{new:true});
             res.status(201).json(cliente);
         }else{
             res.status(404).json();

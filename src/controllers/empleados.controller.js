@@ -66,9 +66,15 @@ export const createEmpleado=async (req,res)=>{
 }
 
 export const updateEmpleadoAdmin=async (req,res)=>{
-    const empleado=await Empleado.findByIdAndUpdate(req.body._id,req.body,{new:true});
-    if (empleado!=null)res.status(201).json(empleado);
-    else res.status(404).json();
+    try {
+        const empleado=await Empleado.findByIdAndUpdate(req.body._id,req.body,{new:true});
+        if (empleado!=null)res.status(201).json(empleado);
+        else res.status(404).json();
+    } catch (error) {
+        res.status(404).json();
+        console.log
+    }
+    
 }
 
 export const updateEmpleado=async (req,res)=>{
